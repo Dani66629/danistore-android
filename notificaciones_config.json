@@ -1,0 +1,11 @@
+{
+  "activo": true,
+  "intervalo_minutos": 60,
+  "notificar_dias_antes": [
+    0,
+    1,
+    3
+  ],
+  "sonido": true,
+  "duracion_notificacion": 10
+}

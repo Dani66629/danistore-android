@@ -1,0 +1,9 @@
+{
+  "servicio_activo": true,
+  "intervalo_verificacion": 60,
+  "notificaciones_avanzadas": true,
+  "log_activado": true,
+  "auto_inicio": false,
+  "version": "1.0",
+  "instalado": "2025-08-30 20:35:13"
+}

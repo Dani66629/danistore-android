@@ -1,0 +1,27 @@
+# Archivos de construcción
+.buildozer/
+bin/
+build/
+dist/
+
+# Archivos de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de datos sensibles (opcional)
+# suscripciones_data.json
+
+# Logs
+*.log
+
+# Archivos temporales
+*.tmp
+*.temp

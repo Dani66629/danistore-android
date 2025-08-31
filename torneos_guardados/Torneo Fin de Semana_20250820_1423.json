@@ -1,0 +1,86 @@
+{
+  "nombre_torneo": "Torneo Fin de Semana",
+  "fecha_creacion": "2025-08-20 14:23:20",
+  "participantes": [
+    "sadd",
+    "d",
+    "s",
+    "a",
+    "g",
+    "j",
+    "k",
+    "l",
+    "n",
+    "v"
+  ],
+  "rondas": [
+    [
+      {
+        "participante1": "j",
+        "participante2": "g",
+        "ganador": "j",
+        "completado": true,
+        "victorias_p1": 6,
+        "victorias_p2": 0
+      },
+      {
+        "participante1": "l",
+        "participante2": "d",
+        "ganador": "d",
+        "completado": true,
+        "victorias_p1": 0,
+        "victorias_p2": 5
+      },
+      {
+        "participante1": "n",
+        "participante2": "v",
+        "ganador": "n",
+        "completado": true,
+        "victorias_p1": 4,
+        "victorias_p2": 0
+      },
+      {
+        "participante1": "k",
+        "participante2": "s",
+        "ganador": "s",
+        "completado": true,
+        "victorias_p1": 0,
+        "victorias_p2": 3
+      },
+      {
+        "participante1": "a",
+        "participante2": "sadd",
+        "ganador": "a",
+        "completado": true,
+        "victorias_p1": 2,
+        "victorias_p2": 0
+      }
+    ],
+    [
+      {
+        "participante1": "d",
+        "participante2": "n",
+        "ganador": null,
+        "completado": false,
+        "victorias_p1": 0,
+        "victorias_p2": 0
+      },
+      {
+        "participante1": "s",
+        "participante2": "a",
+        "ganador": null,
+        "completado": false,
+        "victorias_p1": 0,
+        "victorias_p2": 0
+      }
+    ]
+  ],
+  "nombres_rondas": [
+    "ELIMINATORIAS INICIALES",
+    "CUARTOS DE FINAL"
+  ],
+  "participante_libre": "j",
+  "ronda_actual": 0,
+  "fecha_guardado": "2025-08-20 14:23:20",
+  "version": "1.0"
+}

@@ -1,0 +1,133 @@
+name: 🚀 Build DaniStore Gestor APK
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'gestor_suscripciones.py'
+      - 'danistore_app.py'
+      - 'buildozer.spec'
+      - '.github/workflows/build-apk.yml'
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Versión de la APK'
+        required: false
+        default: '1.0'
+
+jobs:
+  build-gestor-apk:
+    name: 📱 Construir APK del Gestor
+    runs-on: ubuntu-20.04
+    
+    steps:
+    - name: 📥 Checkout código
+      uses: actions/checkout@v4
+
+    - name: 🐍 Configurar Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: 📋 Verificar archivos necesarios
+      run: |
+        echo "🔍 Verificando archivos del gestor..."
+        ls -la
+        
+        if [ ! -f "danistore_app.py" ]; then
+          echo "❌ danistore_app.py no encontrado"
+          exit 1
+        fi
+        
+        if [ ! -f "buildozer.spec" ]; then
+          echo "❌ buildozer.spec no encontrado"
+          exit 1
+        fi
+        
+        echo "✅ Archivos principales encontrados"
+        
+        # Crear directorio de iconos si no existe
+        mkdir -p iconos_android
+        
+        # Usar icono existente o crear uno por defecto
+        if [ -f "gestor_icon.png" ]; then
+          cp gestor_icon.png iconos_android/gestor_icon.png
+          echo "✅ Icono copiado desde gestor_icon.png"
+        elif [ -f "torneo_icon.png" ]; then
+          cp torneo_icon.png iconos_android/gestor_icon.png
+          echo "✅ Icono copiado desde torneo_icon.png"
+        else
+          echo "⚠️ No se encontró icono, buildozer usará uno por defecto"
+        fi
+
+    - name: 🔧 Preparar entorno
+      run: |
+        echo "📦 Instalando dependencias del sistema..."
+        sudo apt-get update
+        sudo apt-get install -y git zip unzip openjdk-11-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
+        
+        echo "🐍 Instalando dependencias de Python..."
+        python -m pip install --upgrade pip
+        pip install buildozer cython==0.29.33 kivy[base] pillow
+
+    - name: 🏗️ Construir APK con Buildozer
+      id: buildozer
+      run: |
+        echo "🚀 Iniciando construcción de APK..."
+        echo "📱 App: DaniStore - Gestor de Suscripciones"
+        echo "📅 Fecha: $(date)"
+        
+        # Configurar buildozer
+        buildozer android debug
+        
+        # Verificar que se generó la APK
+        if [ -f "bin/*.apk" ]; then
+          APK_FILE=$(ls bin/*.apk | head -1)
+          APK_SIZE=$(du -h "$APK_FILE" | cut -f1)
+          echo "✅ APK generada exitosamente: $APK_FILE ($APK_SIZE)"
+          echo "apk_path=$APK_FILE" >> $GITHUB_OUTPUT
+          echo "apk_size=$APK_SIZE" >> $GITHUB_OUTPUT
+        else
+          echo "❌ No se encontró APK generada"
+          exit 1
+        fi
+
+    - name: 📱 Renombrar APK
+      run: |
+        cd bin
+        APK_FILE=$(ls *.apk | head -1)
+        NEW_NAME="DaniStore_Gestor_Suscripciones_v${{ github.event.inputs.version || '1.0' }}_$(date +%Y%m%d).apk"
+        mv "$APK_FILE" "$NEW_NAME"
+        echo "📱 APK renombrada: $NEW_NAME"
+        echo "renamed_apk=bin/$NEW_NAME" >> $GITHUB_ENV
+
+    - name: 📤 Subir APK como artefacto
+      uses: actions/upload-artifact@v4
+      with:
+        name: DaniStore-Gestor-APK-${{ github.run_number }}
+        path: ${{ env.renamed_apk }}
+        retention-days: 30
+
+    - name: 📊 Resumen de construcción
+      run: |
+        echo "🎉 ¡CONSTRUCCIÓN COMPLETADA EXITOSAMENTE!"
+        echo ""
+        echo "📋 RESUMEN:"
+        echo "📱 Aplicación: DaniStore - Gestor de Suscripciones"
+        echo "📦 APK: ${{ env.renamed_apk }}"
+        echo "📏 Tamaño: ${{ steps.buildozer.outputs.apk_size }}"
+        echo "🔢 Build: #${{ github.run_number }}"
+        echo "📅 Fecha: $(date)"
+        echo ""
+        echo "🚀 CARACTERÍSTICAS:"
+        echo "• ➕ Agregar suscripciones de streaming"
+        echo "• 📋 Gestionar cuentas activas"
+        echo "• 📱 Generar mensajes para WhatsApp"
+        echo "• 🔔 Notificaciones de vencimiento"
+        echo "• 💾 Guardado automático de datos"
+        echo "• 🗑️ Eliminar suscripciones"
+        echo ""
+        echo "📥 DESCARGA:"
+        echo "Ve a la pestaña 'Actions' → Este workflow → 'Artifacts'"
